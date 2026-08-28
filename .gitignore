@@ -1,0 +1,16 @@
+/workspace/
+/data/
+*.log
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.egg-info/
+/dist/
+/build/
+.mypy_cache/
+.ruff_cache/
+/.venv/
+/.tools/
+/ui/dist/
+/ui/node_modules/
