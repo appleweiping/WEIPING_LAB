@@ -15,6 +15,7 @@ Commands:
 from __future__ import annotations
 import asyncio
 import secrets
+import subprocess
 import sys
 import time
 from dataclasses import dataclass, field
@@ -35,6 +36,13 @@ _BYELLOW = "\033[93m"
 _BCYAN = "\033[96m"
 
 MAX_EVENTS = 500
+
+
+def _windows_background_kwargs() -> dict[str, int]:
+    """Return process flags that keep background monitors out of a console window."""
+    if sys.platform != "win32":
+        return {}
+    return {"creationflags": getattr(subprocess, "CREATE_NO_WINDOW", 0)}
 
 
 @dataclass
@@ -144,6 +152,7 @@ async def monitor_start(command: str) -> MonitorInstance:
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
             shell=True,
+            **_windows_background_kwargs(),
         )
     else:
         proc = await asyncio.create_subprocess_shell(
